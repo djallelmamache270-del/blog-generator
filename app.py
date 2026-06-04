@@ -1,4 +1,5 @@
 from flask import Flask, render_template, request
+import os
 from groq import Groq
 
 app = Flask(__name__)
@@ -10,8 +11,8 @@ def index():
         topic = request.form.get("topic")
         if topic:
             try:
-                # نضع المفتاح مباشرة هنا ليقرأه الكود رغماً عن السيرفر
-                client = Groq(api_key="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")
+                # عدنا لقراءة السيرفر بشكل نظيف وآمن تماماً
+                client = Groq(api_key=os.environ.get("GROQ_API_KEY"))
                 
                 chat_completion = client.chat.completions.create(
                     messages=[
