@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Blog Post Generator</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/water.css@2/out/water.css">
+</head>
+<body>
+    <h1>🚀 AI Blog Post Generator</h1>
+    <form method="POST">
+        <label for="topic">Enter Blog Topic:</label>
+        <input type="text" id="topic" name="topic" placeholder="e.g., Python Network Scanner" required>
+        <button type="submit">Generate Article</button>
+    </form>
+    
+    {% if blog_content %}
+        <hr>
+        <h2>📄 Generated Blog Post:</h2>
+        <div>
+            {{ blog_content | safe }}
+        </div>
+    {% endif %}
+</body>
+</html>
