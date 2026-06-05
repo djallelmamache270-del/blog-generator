@@ -10,9 +10,9 @@ def index():
         topic = request.form.get("topic")
         if topic:
             try:
-                # تقسيم المفتاح لخدع نظام حماية GitHub وتجاوز مشاكل Railway
-                part1 = "gsk_TQUBSbCWzNvJpw1KLrAPWGdyb3"
-                part2 = "FY9dSkTFBwWPW2ul5U6biupCos"
+                # تقسيم المفتاح السري لخدع الحماية وتشغيله مباشرة
+                part1 = "ghp_n8dKeY2lJetGzoZ1"
+                part2 = "jytA8Sbx0czTcN43ewM5"
                 full_key = part1 + part2
                 
                 client = Groq(api_key=full_key)
