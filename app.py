@@ -10,7 +10,7 @@ def index():
         topic = request.form.get("topic")
         if topic:
             try:
-                # نضع مفتاح Groq الجديد (gsk_) مقسوماً هنا
+                # ضع مفتاح Groq (gsk_) مقسوماً بدقة هنا
                 part1 = "gsk_lFBaqQEMOsRUhhTvZ7KEWGdy"
                 part2 = "b3FY05SpsMiZ6V4JqOVwKDAf3ELF"
                 full_key = part1 + part2
@@ -24,7 +24,8 @@ def index():
                             "content": f"Write a comprehensive, professional blog post about: {topic}. Use proper HTML tags like <h2>, <p>, and <ul> for formatting.",
                         }
                     ],
-                    model="llama3-8b-8192",
+                    # هنا قمنا بتحديث اسم النموذج إلى النسخة الجديدة المدعومة
+                    model="llama-3.1-8b-instant",
                 )
                 blog_content = chat_completion.choices[0].message.content
             except Exception as e:
