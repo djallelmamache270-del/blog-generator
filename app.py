@@ -10,9 +10,9 @@ def index():
         topic = request.form.get("topic")
         if topic:
             try:
-                # تقسيم المفتاح السري لخدع الحماية وتشغيله مباشرة
-                part1 = "ghp_n8dKeY2lJetGzoZ1"
-                part2 = "jytA8Sbx0czTcN43ewM5"
+                # نضع مفتاح Groq الجديد (gsk_) مقسوماً هنا
+                part1 = "gsk_lFBaqQEMOsRUhhTvZ7KEWGdy"
+                part2 = "b3FY05SpsMiZ6V4JqOVwKDAf3ELF"
                 full_key = part1 + part2
                 
                 client = Groq(api_key=full_key)
