@@ -4,10 +4,18 @@ import os
 
 app = Flask(__name__)
 
-# إعداد مفتاح جيميناي بأمان من السيرفر
+# جلب مفتاح جيميناي بأمان من السيرفر
 GOOGLE_API_KEY = os.getenv("GOOGLE_API_KEY")
+
+# فحص إذا كان المفتاح موجوداً وتكوينه، وإلا سنطبع تحذيراً في السجلات
 if GOOGLE_API_KEY:
-    genai.configure(api_key=GOOGLE_API_KEY)
+    try:
+        genai.configure(api_key=GOOGLE_API_KEY)
+        print("✅ Gemini API Key configured successfully!")
+    except Exception as e:
+        print(f"❌ Error configuring Gemini API: {str(e)}")
+else:
+    print("⚠️ WARNING: GOOGLE_API_KEY is missing from environment variables!")
 
 @app.route('/')
 def index():
@@ -18,6 +26,17 @@ def generate():
     topic = request.form.get('topic')
     if not topic:
         return "من فضلك أدخل عنواناً للمقال", 400
+        
+    # حماية إضافية: إذا لم يتم العثور على المفتاح، لا تدع التطبيق ينهار
+    if not GOOGLE_API_KEY:
+        return """
+        <div style="direction: rtl; font-family: sans-serif; padding: 40px; max-width: 800px; margin: auto; background: #121212; color: #ff3333; border-radius: 10px; border: 1px solid #ff3333;">
+            <h2>❌ عذراً، لم يتم تفعيل مفتاح الذكاء الاصطناعي!</h2>
+            <p>يرجى التأكد من إضافة متغير البيئة <b>GOOGLE_API_KEY</b> داخل تبويب Variables في لوحة تحكم Railway.</p>
+            <br>
+            <a href="/" style="color: #00ffcc; text-decoration: none; font-weight: bold;">⬅️ العودة للموقع</a>
+        </div>
+        """, 500
         
     try:
         model = genai.GenerativeModel('gemini-pro')
@@ -37,7 +56,6 @@ def generate():
     except Exception as e:
         return f"حدث خطأ أثناء الاتصال بالذكاء الاصطناعي: {str(e)}", 500
 
-# هذا الجزء يضمن اشتغال التطبيق على السيرفر ومحلياً دون تعارض
 if __name__ == '__main__':
-    port = int(os.environ.get('PORT', 5000))
-    app.run(host='0.0.0.0', port=port, debug=False)
+    port = int(os.environ.get('PORT', 8080))
+    app.run(host='0.0.0.0', port=port)
