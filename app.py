@@ -4,9 +4,10 @@ import os
 
 app = Flask(__name__)
 
-# إعداد مفتاح جيميناي
+# إعداد مفتاح جيميناي بأمان من السيرفر
 GOOGLE_API_KEY = os.getenv("GOOGLE_API_KEY")
-genai.configure(api_key=GOOGLE_API_KEY)
+if GOOGLE_API_KEY:
+    genai.configure(api_key=GOOGLE_API_KEY)
 
 @app.route('/')
 def index():
@@ -36,7 +37,7 @@ def generate():
     except Exception as e:
         return f"حدث خطأ أثناء الاتصال بالذكاء الاصطناعي: {str(e)}", 500
 
+# هذا الجزء يضمن اشتغال التطبيق على السيرفر ومحلياً دون تعارض
 if __name__ == '__main__':
-    # هنا التعديل الجوهري: جعل المنفذ والعنوان متوافقين مع السيرفرات السحابية
     port = int(os.environ.get('PORT', 5000))
-    app.run(host='0.0.0.0', port=port)
+    app.run(host='0.0.0.0', port=port, debug=False)
