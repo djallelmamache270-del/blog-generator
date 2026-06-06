@@ -4,13 +4,12 @@ import os
 
 app = Flask(__name__)
 
-# إعداد مفتاح جيميناي من متغيرات البيئة بأمان
+# إعداد مفتاح جيميناي
 GOOGLE_API_KEY = os.getenv("GOOGLE_API_KEY")
 genai.configure(api_key=GOOGLE_API_KEY)
 
 @app.route('/')
 def index():
-    # هذا المسار يضمن فتح الصفحة الرئيسية للموقع مباشرة دون أخطاء
     return render_template('index.html')
 
 @app.route('/generate', methods=['POST'])
@@ -25,7 +24,6 @@ def generate():
         response = model.generate_content(prompt)
         article_text = response.text
         
-        # لعرض المقال المولد بشكل بسيط أو يمكنك إنشاء صفحة خاصة به لاحقاً
         return f"""
         <div style="direction: rtl; font-family: sans-serif; padding: 40px; max-width: 800px; margin: auto; background: #121212; color: white; border-radius: 10px;">
             <h1 style="color: #00ffcc;">المقال المولد:</h1>
@@ -39,4 +37,6 @@ def generate():
         return f"حدث خطأ أثناء الاتصال بالذكاء الاصطناعي: {str(e)}", 500
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    # هنا التعديل الجوهري: جعل المنفذ والعنوان متوافقين مع السيرفرات السحابية
+    port = int(os.environ.get('PORT', 5000))
+    app.run(host='0.0.0.0', port=port)
