@@ -7,7 +7,6 @@ app = Flask(__name__)
 # جلب مفتاح جيميناي بأمان من السيرفر
 GOOGLE_API_KEY = os.getenv("GOOGLE_API_KEY")
 
-# فحص إذا كان المفتاح موجوداً وتكوينه، وإلا سنطبع تحذيراً في السجلات
 if GOOGLE_API_KEY:
     try:
         genai.configure(api_key=GOOGLE_API_KEY)
@@ -15,7 +14,7 @@ if GOOGLE_API_KEY:
     except Exception as e:
         print(f"❌ Error configuring Gemini API: {str(e)}")
 else:
-    print("⚠️ WARNING: GOOGLE_API_KEY is missing from environment variables!")
+    print("⚠️ WARNING: GOOGLE_API_KEY is missing!")
 
 @app.route('/')
 def index():
@@ -27,7 +26,6 @@ def generate():
     if not topic:
         return "من فضلك أدخل عنواناً للمقال", 400
         
-    # حماية إضافية: إذا لم يتم العثور على المفتاح، لا تدع التطبيق ينهار
     if not GOOGLE_API_KEY:
         return """
         <div style="direction: rtl; font-family: sans-serif; padding: 40px; max-width: 800px; margin: auto; background: #121212; color: #ff3333; border-radius: 10px; border: 1px solid #ff3333;">
@@ -57,5 +55,6 @@ def generate():
         return f"حدث خطأ أثناء الاتصال بالذكاء الاصطناعي: {str(e)}", 500
 
 if __name__ == '__main__':
-    port = int(os.environ.get('PORT', 8080))
+    # أجبرنا التطبيق هنا على قراءة الـ Port من السيرفر، وإذا لم يجده سيعمل على 5000 تلقائياً ليطابق السيرفر
+    port = int(os.environ.get('PORT', 5000))
     app.run(host='0.0.0.0', port=port)
