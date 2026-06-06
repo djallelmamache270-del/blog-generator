@@ -53,8 +53,3 @@ def generate():
         """
     except Exception as e:
         return f"حدث خطأ أثناء الاتصال بالذكاء الاصطناعي: {str(e)}", 500
-
-if __name__ == '__main__':
-    # أجبرنا التطبيق هنا على قراءة الـ Port من السيرفر، وإذا لم يجده سيعمل على 5000 تلقائياً ليطابق السيرفر
-    port = int(os.environ.get('PORT', 5000))
-    app.run(host='0.0.0.0', port=port)
